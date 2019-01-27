@@ -76,10 +76,10 @@
 		var rightWall = Bodies.rectangle(800, 310, 20, 700, { isStatic: true });
 
 		let bodies = [ground, ceiling, leftWall, rightWall];
-		// for(let i = 0; i < 5; i++) {
-		// 	const body = Bodies.circle(50+(i*10), 50+(i*10), 30, 30)
-		// 	bodies.push(body);
-		// }
+		for(let i = 0; i < 25; i++) {
+			const body = Bodies.circle(50+(i*10), 50+(i*10), 30, 30)
+			bodies.push(body);
+		}
 
 		const textBody = Bodies.rectangle(400, 300, 100, 50);
 		bodies.push(textBody);
@@ -246,7 +246,8 @@
 			
 			state.player.sprite.x += state.player.sprite.vx;
 			state.player.sprite.y += state.player.sprite.vy;
-
+			
+			Matter.Body.setAngle(textBody, state.player.sprite.rotation);
 			Matter.Body.setPosition(textBody, {x: state.player.sprite.x, y: state.player.sprite.y});
 
 		}
