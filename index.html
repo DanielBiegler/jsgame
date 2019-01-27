@@ -29,7 +29,9 @@
 		Enable it or enjoy this blank page.
 	</noscript>
 
+	<!-- Game -->
 	<script>
+
 		// module aliases
 		var Engine = Matter.Engine,
 			Render = Matter.Render,
@@ -65,25 +67,30 @@
 		World.add(world, mouseConstraint);
 		
 		// create two boxes and a ground
-		var boxA = Bodies.rectangle(400, 200, 80, 80);
-		var boxB = Bodies.rectangle(450, 50, 80, 80);
 		var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
-		var ceiling = Bodies.rectangle(400, 0, 810, 60, { isStatic: true });
+		var ceiling = Bodies.rectangle(400, 0, 810, 20, { isStatic: true });
 		var leftWall = Bodies.rectangle(0, 310, 20, 700, { isStatic: true });
 		var rightWall = Bodies.rectangle(800, 310, 20, 700, { isStatic: true });
 
+		let bodies = [ground, ceiling, leftWall, rightWall];
+		for(let i = 0; i < 35; i++) {
+			const body = Bodies.circle(50+(i*10), 50+(i*10), 30, 30)
+			bodies.push(body);
+		}
+
 		// add all of the bodies to the world
-		World.add(engine.world, [boxA, boxB, ground, ceiling, leftWall, rightWall]);
+		World.add(engine.world, bodies);
 
 		// run the engine
 		Engine.run(engine);
 
 		// run the renderer
 		Render.run(render);
-	</script>
 
-	<!-- Game -->
-	<script>
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////   END OF ENGINE   ////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
 		const keycode = {
 			W: 87,
 			A: 65,
