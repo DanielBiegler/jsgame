@@ -75,8 +75,55 @@
 				body: undefined
 			},
 			isPaused: false,
-			engine: undefined
+			engine: undefined,
+			entities: []
 		};
+
+
+		function addTextWithBody(text, x, y, bodyConfig) {
+			const style = new PIXI.TextStyle({
+				fontFamily: 'Arial',
+				fontSize: 36,
+				fontStyle: 'italic',
+				fontWeight: 'bold',
+				fill: ['#ffffff', '#00ff99'], // gradient
+				stroke: '#4a1850',
+				strokeThickness: 5,
+				dropShadow: true,
+				dropShadowColor: '#000000',
+				dropShadowBlur: 4,
+				dropShadowAngle: Math.PI / 6,
+				dropShadowDistance: 6,
+				wordWrap: true,
+				wordWrapWidth: 440
+			});
+
+			const sprite = new PIXI.Text(text, style);
+			sprite.x = x;
+			sprite.y = y;
+			sprite.anchor.set(0.5);
+			sprite.interactive = true;
+			sprite.buttonMode = true;
+			
+
+			let body;
+			if(bodyConfig === undefined || typeof bodyConfig !== "object") {
+				body = Matter.Bodies.rectangle(x, y, sprite.width, sprite.height);
+			} else {
+				body = Matter.Bodies.rectangle(x, y, sprite.width, sprite.height, bodyConfig);
+			}
+			
+			const entity = { 
+				sprite: sprite,
+				body: body
+			};
+
+			state.entities.push(entity);
+
+			Matter.World.add(state.engine.world, body);
+			state.app.stage.addChild(sprite);
+
+		}
 
 
 		function initPixi() {
@@ -92,6 +139,13 @@
 
 		function initSceneText() {
 			drawText();
+
+			addTextWithBody("new Date().getTime()", 100, 50);
+			addTextWithBody(new Date().getTime(), 100, 100);
+			addTextWithBody("tiny", 100, 150);
+			addTextWithBody("HUUUUUUUUUUUUUUUUGEEEEEEEE", 100, 200);
+			addTextWithBody("STATIC", 100, 50, { isStatic: true });
+			
 		}
 
 		function initMatterEngine() {
@@ -245,8 +299,13 @@
 			state.player.sprite.x += state.player.sprite.vx;
 			state.player.sprite.y += state.player.sprite.vy;
 			
-			// Matter.Body.setAngle(state.player.body, state.player.sprite.rotation);
-			// Matter.Body.setPosition(state.player.body, {x: state.player.sprite.x, y: state.player.sprite.y});
+			// connect sprites with the bodies!
+			for(entity of state.entities) {
+				entity.sprite.rotation = entity.body.angle;
+				entity.sprite.x = entity.body.position.x;
+				entity.sprite.y = entity.body.position.y;
+			}
+			
 			state.player.sprite.rotation = state.player.body.angle;
 			state.player.sprite.x = state.player.body.position.x;
 			state.player.sprite.y = state.player.body.position.y;
@@ -256,9 +315,9 @@
 
 		function main() {
 			initPixi();
-			initInput();
-			initSceneText();
 			initMatterEngine();
+			initSceneText();
+			initInput();
 			
 			// start gameloop
 			state.app.ticker.add(delta => gameLoop(delta));
