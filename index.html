@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<title>Example Application</title>
+
+	<style>
+		html,
+		body {
+			height: 100%;
+			width: 100%;
+			
+			align-items: center;
+			display: flex;
+			justify-content: center;
+			
+			background-color: #1f2424;
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+	<!-- Other people stuff -->
+	<script src="./submodules/pixijs_prebuilt/pixi.min.js"></script>
+	<script src="./submodules/matter-js/build/matter.min.js"></script>
+	<!-- <script src="./submodules/ulog/ulog.min.js"></script> -->
+
+	<!-- Biegler stuff -->
+	<script src="./js/Biegler/Log.js"></script>
+
+	<script src="./js/Biegler/Event.js"></script>
+	<script src="./js/Biegler/KeyEvent.js"></script>
+	<script src="./js/Biegler/KeyDownEvent.js"></script>
+	<script src="./js/Biegler/MouseEvent.js"></script>
+	<script src="./js/Biegler/MouseDownEvent.js"></script>
+
+	<script src="./js/Biegler/Layer.js"></script>
+	<script src="./js/Biegler/UpperLayer.js"></script>
+	<script src="./js/Biegler/BaseLayer.js"></script>
+	<script src="./js/Biegler/LayerStack.js"></script>
+
+	<script src="./js/Biegler/Core.js"></script>
+	<script src="./js/Biegler/Application.js"></script>
+
+	<!-- My App -->
+	<script src="./js/ExampleApplication.js"></script>
+
+	<!-- Entry point -->
+	<script>
+		const app = createApplication();
+		app.main();
+	</script>
+
+	<noscript>
+		This site needs Javascript to function.
+		Enable it or enjoy this blank page.
+	</noscript>
+
+</body>
+</html>
