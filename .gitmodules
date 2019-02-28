@@ -1,3 +1,9 @@
 [submodule "vendor/ulog"]
-	path = vendor/ulog
+	path = submodules/ulog
 	url = https://github.com/Download/ulog.git
+[submodule "submodules/pixi.js"]
+	path = submodules/pixi.js
+	url = https://github.com/pixijs/pixi.js.git
+[submodule "submodules/matter-js"]
+	path = submodules/matter-js
+	url = https://github.com/liabru/matter-js.git
