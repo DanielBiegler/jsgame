@@ -140,11 +140,11 @@
 		function initSceneText() {
 			drawText();
 
-			addTextWithBody("new Date().getTime()", 100, 50);
+			addTextWithBody("new Date().getTime()", 100, 50, { frictionAir: 1 });
 			addTextWithBody(new Date().getTime(), 100, 100);
 			addTextWithBody("tiny", 100, 150);
 			addTextWithBody("HUUUUUUUUUUUUUUUUGEEEEEEEE", 100, 200);
-			addTextWithBody("STATIC", 100, 50, { isStatic: true });
+			addTextWithBody("yeafg", 100, 50, { frictionAir: 1 });
 			
 		}
 
@@ -154,12 +154,15 @@
 				Render = Matter.Render,
 				World = Matter.World,
 				Bodies = Matter.Bodies,
+				Body = Matter.Body,
 				MouseConstraint = Matter.MouseConstraint,
-				Mouse = Matter.Mouse;
+				Mouse = Matter.Mouse,
+				Events = Matter.Events;
 
 
 			// create an engine
 			var engine = Engine.create();
+			engine.world.gravity.y = 0;
 			state.engine = engine;
 			var world = engine.world;
 
@@ -172,6 +175,22 @@
 					showCollisions: true
 				}
 			});
+
+		// let counter = 0;
+		// Events.on(engine, 'beforeUpdate', function(event) {
+		// 	counter += 1;
+		// 	// every 1.5 sec
+		// 	if (counter >= 60 * 0.7) {
+				
+		// 		Body.setVelocity(state.entities[0].body, { x: 0, y: -10 });
+		// 		// Body.setAngle(bodyC, -Math.PI * 0.26);
+		// 		// Body.setAngularVelocity(bodyD, 0.2);
+
+		// 		// reset counter
+		// 		counter = 0;
+		// 	}
+		// });
+			
 
 			// add mouse control
 			var mouse = Mouse.create(render.canvas),
@@ -272,15 +291,16 @@
 				}
 			}
 
-			if(Key.isDown(keycode.A) && Key.isDown(keycode.D)) { state.player.sprite.vx = 0; }
-			else if(Key.isDown(keycode.A)) { state.player.sprite.vx = -state.player.speed; }
-			else if(Key.isDown(keycode.D)) { state.player.sprite.vx = state.player.speed; }
-			else { state.player.sprite.vx = 0; }
+			let velocity = 0.3;
+			if(Key.isDown(keycode.A) && Key.isDown(keycode.D)) {  }
+			else if(Key.isDown(keycode.A)) { Matter.Body.applyForce(state.entities[0].body, { x: state.entities[0].body.position.x, y: state.entities[0].body.position.y }, { x: -velocity, y: 0 }); }
+			else if(Key.isDown(keycode.D)) { Matter.Body.applyForce(state.entities[0].body, { x: state.entities[0].body.position.x, y: state.entities[0].body.position.y }, { x: velocity, y: 0 }); }
+			else {  }
 
-			if(Key.isDown(keycode.W) && Key.isDown(keycode.S)) { state.player.sprite.vy = 0; }
-			else if(Key.isDown(keycode.W)) { state.player.sprite.vy = -state.player.speed; }
-			else if(Key.isDown(keycode.S)) { state.player.sprite.vy = state.player.speed; }
-			else { state.player.sprite.vy = 0; }
+			if(Key.isDown(keycode.W) && Key.isDown(keycode.S)) {  }
+			else if(Key.isDown(keycode.W)) { Matter.Body.applyForce(state.entities[0].body, { x: state.entities[0].body.position.x, y: state.entities[0].body.position.y }, { x: 0, y: -velocity }); }
+			else if(Key.isDown(keycode.S)) { Matter.Body.applyForce(state.entities[0].body, { x: state.entities[0].body.position.x, y: state.entities[0].body.position.y }, { x: 0, y: velocity }); }
+			else {  }
 
 
 			if (Key.isDown(keycode.SPACE)) {
