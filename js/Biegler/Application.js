@@ -13,6 +13,9 @@ Biegler.Application = class {
 		this._layerStack.stack.push(new Biegler.BaseLayer());
 		this._layerStack.stack.push(new Biegler.UpperLayer());
 
+		// this._physics = matter-engine-whatever;
+		// this._renderer = pixi-renderer-whatever;
+
 		this.initEventCallbacks();
 	}
 
@@ -67,6 +70,12 @@ Biegler.Application = class {
 				this._layerStack.stack[i].onUpdate();
 			}
 
+			/**
+			 * After updating all state,
+			 * render the new view
+			 */
+			// renderer.render_whatever()
+			
 			this.isRunning = false;
 			Biegler.debug("Ran once. Turn off now.");
 		}
