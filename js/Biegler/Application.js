@@ -42,13 +42,15 @@ Biegler.Application = class {
 	 * @param {Biegler.Event} e 
 	 */
 	onEvent(e) {
-		Biegler.debug(e);
+		Biegler.debug("Event fired:", e);
 
 		// highest to lowest layer
 		// stop propagating an event if it got handled
 		for(let i = this._layerStack.stack.length - 1; i >= 0; i--) {
+			Biegler.debug("Passing event into", this._layerStack.stack[i]);
 			this._layerStack.stack[i].onEvent(e);
 			if(e.gotHandled) {
+				Biegler.info(`Event (${e}) got handled.`);
 				break;
 			}
 		}
@@ -66,7 +68,7 @@ Biegler.Application = class {
 			}
 
 			this.isRunning = false;
-			Biegler.info("Ran once. Turn off now.");
+			Biegler.debug("Ran once. Turn off now.");
 		}
 		
 	}

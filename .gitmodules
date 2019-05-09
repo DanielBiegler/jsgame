@@ -7,3 +7,6 @@
 [submodule "submodules/matter-js"]
 	path = submodules/matter-js
 	url = https://github.com/liabru/matter-js.git
+[submodule "submodules/nano-ecs"]
+	path = submodules/nano-ecs
+	url = https://github.com/noffle/nano-ecs
