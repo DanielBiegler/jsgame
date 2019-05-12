@@ -8,15 +8,13 @@ Biegler.Application = class {
 
 	constructor() {
 		this._isRunning = true;
+		this._oldTime = Date.now();
 		
 		this._layerStack = new Biegler.LayerStack();
-		this._layerStack.stack.push(new Biegler.BaseLayer());
-		this._layerStack.stack.push(new Biegler.UpperLayer());
-
-		// this._physics = matter-engine-whatever;
-		// this._renderer = pixi-renderer-whatever;
 
 		this.initEventCallbacks();
+		this.initGraphicsContext();
+		this.initPhysicsEngine();
 	}
 
 
@@ -24,6 +22,8 @@ Biegler.Application = class {
 	 * This is specifically in its own function so we can retain a reference to Application
 	 * 
 	 * Maybe put this in its own file, not sure right now
+	 * 
+	 * Probably just for debugging stuff atm
 	 */
 	initEventCallbacks() {
 		let self = this;
@@ -38,6 +38,23 @@ Biegler.Application = class {
 			self.onEvent( event );
 		});
 	}
+
+	initGraphicsContext() {
+		// todo refactor magic vars
+		const pixiConfig = {
+			width: 800,
+			height: 600,
+			backgroundColor: 0x1099bb,
+			resolution: window.devicePixelRatio || 1
+		};
+		
+		Biegler.pixi = new PIXI.Renderer(pixiConfig);
+		document.body.appendChild(Biegler.pixi.view);
+	}
+
+	initPhysicsEngine() {
+		Biegler.info("initPhysicsEngine does nothing.");
+	}
 	
 
 	/**
@@ -50,7 +67,6 @@ Biegler.Application = class {
 		// highest to lowest layer
 		// stop propagating an event if it got handled
 		for(let i = this._layerStack.stack.length - 1; i >= 0; i--) {
-			Biegler.debug("Passing event into", this._layerStack.stack[i]);
 			this._layerStack.stack[i].onEvent(e);
 			if(e.gotHandled) {
 				Biegler.info(`Event (${e}) got handled.`);
@@ -60,28 +76,35 @@ Biegler.Application = class {
 	}
 	
 	set isRunning(val) { this._isRunning = val; return this._isRunning; }
+	get isRunning() { return this._isRunning; }
+
+	tick() {
+		// TODO rm magic vars?
+		const newTime = Date.now();
+		let deltaTime = newTime - app._oldTime;
+		app._oldTime = newTime;	
+		if (deltaTime < 0) deltaTime = 0;
+		if (deltaTime > 1000) deltaTime = 1000;
+		const deltaFrame = deltaTime * 60 / 1000; // 1.0 is for single frame
+
+		
+		// update lowest to highest layer
+		for(let i = 0; i < app._layerStack.stack.length; i++) {
+			app._layerStack.stack[i].onUpdate(deltaFrame);
+		}
 	
-	main() {
-
-		while(this._isRunning) {
-			
-			// update lowest to highest layer
-			for(let i = 0; i < this._layerStack.stack.length; i++) {
-				this._layerStack.stack[i].onUpdate();
-			}
-
-			/**
-			 * After updating all state,
-			 * render the new view
-			 */
-			// renderer.render_whatever()
-			
-			this.isRunning = false;
-			Biegler.debug("Ran once. Turn off now.");
+		// update lowest to highest layer
+		// TODO Lookup how DDD ECS would implement this?
+		for(let i = 0; i < app._layerStack.stack.length; i++) {
+			app._layerStack.stack[i].onRender();
 		}
 		
+		requestAnimationFrame(app.tick);
 	}
 	
+	main() {
+		requestAnimationFrame(this.tick);
+	}
 	
 }
 

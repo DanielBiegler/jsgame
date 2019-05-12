@@ -7,7 +7,7 @@ class Example extends Biegler.Application {
 	constructor() {
 		super();
 
-		this._layerStack.stack.push(new WorldLayer());
+		this._layerStack.stack.push(new MenuBackgroundLayer());
 	}
 	
 }

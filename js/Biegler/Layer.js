@@ -14,7 +14,15 @@ Biegler.Layer = class {
 		Biegler.err("Override me.");
 	}
 
-	onUpdate() {
+	/**
+	 * 
+	 * @param {Number} delta To calculate logic between frames.
+	 */
+	onUpdate(delta) {
+		Biegler.err("Override me.");
+	}
+
+	onRender() {
 		Biegler.err("Override me.");
 	}
 
